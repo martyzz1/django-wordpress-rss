@@ -7,6 +7,7 @@ from django.conf import settings
 
 register = template.Library()
 
+
 @register.tag(name='wordpress_rss')
 def do_rss_latest(parser, token):
     """
@@ -49,19 +50,18 @@ class GetRSSLatest(template.Node):
         self.var_name = var_name
 
     def render(self, context):
-        try:
-            actual_category = self.category.resolve(context)
-        except template.VariableDoesNotExist:
-            return ''
         context[self.var_name] = []
         feed_url = getattr(
             settings,
-            'WORDPRESS_RSS_BASE_URL', 
+            'WORDPRESS_RSS_BASE_URL',
             'http://www.kevinschaul.com'
         )
-        feed_url += '/category/'
-        feed_url += str(actual_category)
-        feed_url += '/feed/'
+        try:
+            actual_category = self.category.resolve(context)
+            feed_url += "/category/%s/feed/" % str(actual_category)
+        except template.VariableDoesNotExist:
+            feed_url += '/feed/'
+
         d = feedparser.parse(feed_url)
         for item in d.entries[:self.number_of_items]:
             try:
@@ -73,4 +73,3 @@ class GetRSSLatest(template.Node):
             except AttributeError:
                 pass
         return ''
-
