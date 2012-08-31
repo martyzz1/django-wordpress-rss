@@ -56,9 +56,13 @@ class GetRSSLatest(template.Node):
             'WORDPRESS_RSS_BASE_URL',
             'http://www.kevinschaul.com'
         )
+
         try:
             actual_category = self.category.resolve(context)
-            feed_url += "/category/%s/feed/" % str(actual_category)
+            if actual_category:
+                feed_url += "/category/%s/feed/" % str(actual_category)
+            else:
+                feed_url += '/feed/'
         except template.VariableDoesNotExist:
             feed_url += '/feed/'
 
