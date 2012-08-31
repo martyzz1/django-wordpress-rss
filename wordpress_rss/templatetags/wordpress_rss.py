@@ -73,6 +73,10 @@ class GetRSSLatest(template.Node):
                     'title': item.title_detail['value'],
                     'href': item.link,
                 }
+                if 'media_thumbnail' in item:
+                    rss_item['media_thumbnail'] = item.media_thumbnail[0]['url']
+                else:
+                    rss_item['media_thumbnail'] = ''
                 context[self.var_name].append(rss_item)
             except AttributeError:
                 pass
