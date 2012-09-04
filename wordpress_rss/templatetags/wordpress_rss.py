@@ -75,9 +75,9 @@ class GetRSSLatest(template.Node):
                 }
                 if 'media_thumbnail' in item:
                     thumbnail = item.media_thumbnail[0]['url']
-                    thumbnail.replace('https://', '//')
-                    thumbnail.replace('http://', '//')
-                    rss_item['media_thumbnail'] = item.media_thumbnail[0]['url']
+                    thumbnail = thumbnail.replace('https://', '//')
+                    thumbnail = thumbnail.replace('http://', '//')
+                    rss_item['media_thumbnail'] = thumbnail
                 else:
                     rss_item['media_thumbnail'] = ''
                 context[self.var_name].append(rss_item)
