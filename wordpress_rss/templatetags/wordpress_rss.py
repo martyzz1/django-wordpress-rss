@@ -74,6 +74,9 @@ class GetRSSLatest(template.Node):
                     'href': item.link,
                 }
                 if 'media_thumbnail' in item:
+                    thumbnail = item.media_thumbnail[0]['url']
+                    thumbnail.replace('https://', '//')
+                    thumbnail.replace('http://', '//')
                     rss_item['media_thumbnail'] = item.media_thumbnail[0]['url']
                 else:
                     rss_item['media_thumbnail'] = ''
